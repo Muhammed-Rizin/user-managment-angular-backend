@@ -36,9 +36,33 @@ const postLogin = async ( req, res ) => {
 const getUsers = async ( req, res ) => {
     try {
         const userData = await User.find({})
-        res.status(200).json(userData)
+        res.status(200).json(userData).send(
+            {message : 'Success'}
+        )
     } catch (error) {
         
+    }
+}
+
+const getAdmin = async (req,res) => {
+    try {
+        const cookie = req.cookies['jwtAdmin']
+        const claims = jwt.verify(cookie, 'secret')
+        if(!claims){
+            console.log(claims, cookie)
+            return res.status(401).send({
+                message : "unauthenticated"
+            })
+        }
+
+        res.status(200).send({
+            message : 'Success'
+        })
+
+    } catch (error) {
+        return res.status(401).send({
+            message : "unauthenticated"
+        })
     }
 }
 
@@ -116,11 +140,24 @@ const editUser = async (req, res ) => {
     }
 }
 
+const logOut = (req,res) => {
+    try{
+        res.cookie('jwtAdmin','',{maxAge : 0})
+        res.send({
+            message : 'Success'
+        })
+    }catch(error){
+        
+    }
+}
+
 module.exports ={
     postLogin,
     getUsers,
     deleteUser,
     createUser,
     userDetails,
-    editUser
+    editUser,
+    getAdmin,
+    logOut
 }

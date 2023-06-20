@@ -96,24 +96,27 @@ const getuser = async (req,res) => {
 }
 
 const updateImage = async (req, res) => {
-    const cookie = req.cookies['jwt']
-    const claims = jwt.verify(cookie, 'secret')
-    if(!claims) {
-        return res.status(401).send({
-            message : 'unauthenticated'
-        })
-    }
-
-    const updateImage = await User.updateOne({_id : claims._id}, {$set : {image : req.file.filename}})
-    console.log(updateImage);
-    if(updateImage){
-        res.status(200).json({
-            message : 'image uploaded successfully'
-        })
-    }else {
-        res.status(401).json({
-            message : 'Something went wrong'
-        })
+    try {
+        const cookie = req.cookies['jwt']
+        const claims = jwt.verify(cookie, 'secret')
+        if(!claims) {
+            return res.status(401).send({
+                message : 'unauthenticated'
+            })
+        }
+    
+        const updateImage = await User.updateOne({_id : claims._id}, {$set : {image : req.file.filename}})
+        if(updateImage){
+            res.status(200).json({
+                message : 'image uploaded successfully'
+            })
+        }else {
+            res.status(401).json({
+                message : 'Something went wrong'
+            })
+        }
+    } catch (error) {
+        
     }
 }
 
@@ -124,6 +127,14 @@ const logOut = (req,res) => {
             message : 'Success'
         })
     }catch(error){
+        
+    }
+}
+
+const file = async (req,res) => {
+    try {
+        
+    } catch (error) {
         
     }
 }

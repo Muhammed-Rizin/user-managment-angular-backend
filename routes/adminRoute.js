@@ -8,5 +8,7 @@ adminRoute.get( '/deleteuser', adminController.deleteUser )
 adminRoute.post( '/createuser', adminController.createUser )
 adminRoute.get( '/editDetails', adminController.userDetails )
 adminRoute.post( '/edituser', adminController.editUser )
+adminRoute.get( '/admin', adminController.getAdmin)
+adminRoute.get( '/logout', adminController.logOut)
 
 module.exports = adminRoute
